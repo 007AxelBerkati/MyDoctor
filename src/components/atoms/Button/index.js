@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-export default function Button({ type, title }) {
+export default function Button({ type, title, onPress }) {
   return (
-    <View style={styles.container(type)}>
+    <TouchableOpacity style={styles.container(type)} onPress={onPress}>
       <Text style={styles.text(type)}>{title}</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -16,8 +16,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   }),
   text: (type) => ({
-    fontWeight: '600',
     fontSize: 16,
+    fontFamily: 'Nunito-SemiBold',
     textAlign: 'center',
     color: type === 'secondary' ? 'black' : 'white',
   }),
