@@ -1,7 +1,6 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { GetStarted, Register, Splash, Login } from '../pages';
+import React from 'react';
+import { GetStarted, Login, Register, Splash, UploadPhoto } from '../pages';
 
 const Stack = createNativeStackNavigator();
 
@@ -12,6 +11,7 @@ export default function Router() {
       <Stack.Screen name="GetStarted" component={GetStarted} options={{ headerShown: false }} />
       <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
       <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+      <Stack.Screen name="UploadPhoto" component={UploadPhoto} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
