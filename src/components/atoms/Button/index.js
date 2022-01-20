@@ -1,11 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-<<<<<<< HEAD
 import { colors, fonts } from '../../../utils';
 import IconOnly from './IconOnly';
-=======
-import { colors } from '../../../utils';
->>>>>>> 3b691fb8ad63a3eeb72905a2d4bf48eebc3fe9db
 
 export default function Button({ type, title, onPress, icon }) {
   if (type === 'icon-only') {
