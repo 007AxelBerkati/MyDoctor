@@ -7,7 +7,6 @@ export default function Register({ navigation }) {
   return (
     <View style={styles.page}>
       <Header onPress={() => navigation.goBack()} title={'Daftar Akun'} />
-      <Header />
       <View style={styles.container}>
         <Input label={'Full Name'} />
         <Gap height={24} />
@@ -18,7 +17,6 @@ export default function Register({ navigation }) {
         <Input label={'Password'} />
         <Gap height={40} />
         <Button title={'Continue'} onPress={() => navigation.navigate('UploadPhoto')} />
-        <Button title={'Continue'} />
       </View>
     </View>
   );

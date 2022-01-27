@@ -7,7 +7,7 @@ import { colors, fonts } from '../../utils';
 export default function UploadPhoto({ navigation }) {
   return (
     <View style={styles.pages}>
-      <Header onPress={() => navigation.navigate('')} title={'Upload Photo'} />
+      <Header onPress={() => navigation.goBack()} title={'Upload Photo'} />
       <View style={styles.content}>
         <View style={styles.profile}>
           <View style={styles.avatarWrapper}>
