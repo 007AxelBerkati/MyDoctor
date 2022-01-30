@@ -4,16 +4,24 @@ import HomeProfile from './HomeProfile';
 import DoctorCategory from './DoctorCategory';
 import RatedDoctor from './RatedDoctor';
 import NewsItem from './NewsItems';
-import ListDoctorItem from './ListDoctorItem';
-import ListHospitals from '../ListHospitals';
+import List from './List';
+import ListHospitals from './ListHospitals';
+import ChatItem from './ChatItem';
+import InputChat from './InputChat';
+import Profile from './Profile';
+import ProfileItem from './ProfileItem';
 
 export {
   Header,
   BottomNavigator,
   HomeProfile,
+  InputChat,
+  ChatItem,
   DoctorCategory,
   RatedDoctor,
   NewsItem,
-  ListDoctorItem,
+  List,
   ListHospitals,
+  Profile,
+  ProfileItem,
 };

@@ -2,16 +2,16 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { DoctorCategory, Gap, HomeProfile, NewsItem, RatedDoctor } from '../../components';
 import { colors, fonts } from '../../utils';
-import { JSONCategoryDoctor } from '../../assets';
+import { DummyDoctor1, DummyDoctor2, DummyDoctor3, JSONCategoryDoctor } from '../../assets';
 
-export default function Doctor() {
+export default function Doctor({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.wrapperSection}>
             <Gap height={30} />
-            <HomeProfile />
+            <HomeProfile onPress={() => navigation.navigate('UserProfile')} />
             <Text style={styles.welcome}>Mau Konsultasi Dengan Siapa Hari Ini</Text>
           </View>
           <View style={styles.wrapperScroll}>
@@ -19,7 +19,13 @@ export default function Doctor() {
               <View style={styles.category}>
                 <Gap width={30} />
                 {JSONCategoryDoctor.data.map((item) => {
-                  return <DoctorCategory category={item.category} key={item.id} />;
+                  return (
+                    <DoctorCategory
+                      category={item.category}
+                      key={item.id}
+                      onPress={() => navigation.navigate('ChooseDoctor')}
+                    />
+                  );
                 })}
                 <Gap width={22} />
               </View>
@@ -27,9 +33,24 @@ export default function Doctor() {
           </View>
           <View style={styles.wrapperSection}>
             <Text style={styles.sectionLabel}>Top Rated Doctor</Text>
-            <RatedDoctor />
-            <RatedDoctor />
-            <RatedDoctor />
+            <RatedDoctor
+              name={'Alexa Rachel'}
+              desc={'Peditrician'}
+              avatar={DummyDoctor1}
+              onPress={() => navigation.navigate('DoctorProfile')}
+            />
+            <RatedDoctor
+              name={'Sunny Franks'}
+              desc={'Dentist'}
+              avatar={DummyDoctor2}
+              onPress={() => navigation.navigate('DoctorProfile')}
+            />
+            <RatedDoctor
+              name={'Frengky'}
+              desc={'Peditrician'}
+              avatar={DummyDoctor3}
+              onPress={() => navigation.navigate('DoctorProfile')}
+            />
           </View>
           <View style={styles.wrapperSection}>
             <Text style={styles.sectionLabel}>Good News</Text>

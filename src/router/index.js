@@ -11,6 +11,11 @@ import {
   Register,
   Splash,
   UploadPhoto,
+  ChooseDoctor,
+  Chatting,
+  UserProfile,
+  UpdateProfile,
+  DoctorProfile,
 } from '../pages';
 
 const Stack = createNativeStackNavigator();
@@ -28,13 +33,26 @@ const MainApp = () => {
 
 export default function Router() {
   return (
-    <Stack.Navigator initialRouteName="MainApp">
+    <Stack.Navigator initialRouteName="Splash">
       <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false }} />
       <Stack.Screen name="GetStarted" component={GetStarted} options={{ headerShown: false }} />
       <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
       <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
       <Stack.Screen name="UploadPhoto" component={UploadPhoto} options={{ headerShown: false }} />
       <Stack.Screen name="MainApp" component={MainApp} options={{ headerShown: false }} />
+      <Stack.Screen name="ChooseDoctor" component={ChooseDoctor} options={{ headerShown: false }} />
+      <Stack.Screen name="Chatting" component={Chatting} options={{ headerShown: false }} />
+      <Stack.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }} />
+      <Stack.Screen
+        name="DoctorProfile"
+        component={DoctorProfile}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="UpdateProfile"
+        component={UpdateProfile}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }
