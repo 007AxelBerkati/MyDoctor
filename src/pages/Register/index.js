@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Gap, Header, Input, Loading } from '../../components';
 import { Fire } from '../../config';
-import { colors, useForm } from '../../utils';
+import { colors, getData, storeData, useForm } from '../../utils';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { showMessage, hideMessage } from 'react-native-flash-message';
 
@@ -23,14 +23,27 @@ export default function Register({ navigation }) {
 
   const onContinue = () => {
     console.log(form);
+
     setLoading(true);
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, form.email, form.password)
       .then((success) => {
+        const data = {
+          fullName: form.fullName,
+          email: form.email,
+          profession: form.profession,
+        };
         setLoading(false);
         setForm('reset');
-        const user = success.user;
-        console.log('Register Sukses:', user);
+        // https://firebase.com/users
+        Fire.database()
+          .ref('users/' + success.user.uid + '/')
+          .set(data);
+
+        storeData('user', data);
+
+        console.log('Register Sukses:', success);
+        navigation.navigate('UploadPhoto');
         // ...
       })
       .catch((error) => {
@@ -46,7 +59,6 @@ export default function Register({ navigation }) {
 
         console.log('error', error);
       });
-    // navigation.navigate('UploadPhoto');
   };
   return (
     <>

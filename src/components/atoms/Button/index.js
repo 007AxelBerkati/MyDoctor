@@ -11,6 +11,14 @@ export default function Button({ type, title, onPress, icon, disable }) {
   if (type === 'icon-only') {
     return <IconOnly icon={icon} onPress={onPress} />;
   }
+
+  if (disable) {
+    return (
+      <View style={styles.disableBG}>
+        <Text style={styles.disableText}>{title}</Text>
+      </View>
+    );
+  }
   return (
     <TouchableOpacity style={styles.container(type)} onPress={onPress}>
       <Text style={styles.text(type)}>{title}</Text>
@@ -25,6 +33,17 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
   }),
+  disableBG: {
+    paddingVertical: 10,
+    borderRadius: 10,
+    backgroundColor: colors.disable.background,
+  },
+  disableText: {
+    fontSize: 16,
+    fontFamily: fonts.primary[600],
+    color: colors.disable.text,
+    textAlign: 'center',
+  },
   text: (type) => ({
     fontSize: 16,
     fontFamily: fonts.primary[600],
