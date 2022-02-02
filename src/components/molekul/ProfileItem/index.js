@@ -1,7 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { colors, fonts } from '../../../utils';
-import { Button } from '../..';
 
 export default function ProfileItem({ label, value }) {
   return (

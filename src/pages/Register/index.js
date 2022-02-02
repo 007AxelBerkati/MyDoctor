@@ -32,6 +32,7 @@ export default function Register({ navigation }) {
           fullName: form.fullName,
           email: form.email,
           profession: form.profession,
+          uid: success.user.uid,
         };
         setLoading(false);
         setForm('reset');
@@ -42,8 +43,8 @@ export default function Register({ navigation }) {
 
         storeData('user', data);
 
+        navigation.navigate('UploadPhoto', data);
         console.log('Register Sukses:', success);
-        navigation.navigate('UploadPhoto');
         // ...
       })
       .catch((error) => {

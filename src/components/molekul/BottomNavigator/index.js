@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { TabItem } from '../..';
+import { TabItem } from '../../atoms';
 import { colors } from '../../../utils';
 
 export default function BottomNavigator({ state, descriptors, navigation }) {
