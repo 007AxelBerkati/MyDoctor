@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Button, Gap, Header, Input, Loading } from '../../components';
+import { useDispatch } from 'react-redux';
+import { Button, Gap, Header, Input } from '../../components';
 import { Fire } from '../../config';
-import { colors, getData, storeData, useForm } from '../../utils';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { showMessage, hideMessage } from 'react-native-flash-message';
+import { colors, showError, storeData, useForm } from '../../utils';
 
 export default function Register({ navigation }) {
   // const [fullName, setFullName] = useState('');
@@ -19,12 +19,12 @@ export default function Register({ navigation }) {
     password: '',
   });
 
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const onContinue = () => {
-    console.log(form);
+    // console.log(form);
 
-    setLoading(true);
+    dispatch({ type: 'SET_LOADING', value: true });
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, form.email, form.password)
       .then((success) => {
@@ -34,7 +34,7 @@ export default function Register({ navigation }) {
           profession: form.profession,
           uid: success.user.uid,
         };
-        setLoading(false);
+        dispatch({ type: 'SET_LOADING', value: false });
         setForm('reset');
         // https://firebase.com/users
         Fire.database()
@@ -44,21 +44,14 @@ export default function Register({ navigation }) {
         storeData('user', data);
 
         navigation.navigate('UploadPhoto', data);
-        console.log('Register Sukses:', success);
+        // console.log('Register Sukses:', success);
         // ...
       })
       .catch((error) => {
-        setLoading(false);
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        showMessage({
-          message: errorMessage,
-          type: 'default',
-          backgroundColor: colors.warning,
-          color: colors.White,
-        });
+        dispatch({ type: 'SET_LOADING', value: false });
+        showError(error.message);
 
-        console.log('error', error);
+        // console.log('error', error);
       });
   };
   return (
@@ -96,7 +89,6 @@ export default function Register({ navigation }) {
           </ScrollView>
         </View>
       </View>
-      {loading && <Loading />}
     </>
   );
 }

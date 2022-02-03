@@ -7,7 +7,7 @@ import { DummyDoctor1, DummyDoctor2, DummyDoctor3, JSONCategoryDoctor } from '..
 export default function Doctor({ navigation }) {
   useEffect(() => {
     getData('user').then((res) => {
-      console.log('dataUser', res);
+      // console.log('dataUser', res);
     });
   }, []);
 

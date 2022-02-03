@@ -6,18 +6,20 @@ import { colors, fonts } from '../../utils';
 
 export default function Splash({ navigation }) {
   useEffect(() => {
-    setTimeout(() => {
-      Fire.auth().onAuthStateChanged((user) => {
+    const unsubscribe = Fire.auth().onAuthStateChanged((user) => {
+      setTimeout(() => {
         if (user) {
           //user lagi login
-          console.log('user :', user);
+          // console.log('user :', user);
           navigation.replace('MainApp');
         } else {
           //user log out
           navigation.replace('GetStarted');
         }
-      });
-    }, 3000);
+      }, 3000);
+    });
+
+    return () => unsubscribe();
   }, [navigation]);
   return (
     <View style={styles.page}>

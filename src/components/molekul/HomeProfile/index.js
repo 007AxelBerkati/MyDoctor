@@ -15,7 +15,7 @@ export default function HomeProfile({ onPress }) {
       // console.log('dataUser', res);
       const data = res;
       data.photo = { uri: res.photo };
-      console.log('New Profile :', data);
+      // console.log('New Profile :', data);
       setProfile(res);
     });
   }, []);

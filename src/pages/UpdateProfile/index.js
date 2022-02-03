@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Button, Gap, Header, Input, Profile } from '../../components';
-import { colors, getData, storeData } from '../../utils';
+import { colors, getData, showError, storeData } from '../../utils';
 import { Fire } from '../../config';
 import { showMessage } from 'react-native-flash-message';
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -28,25 +28,21 @@ export default function UpdateProfile({ navigation }) {
   }, []);
 
   const update = () => {
-    console.log('profle :', profile);
-
-    console.log('New Password : ', password);
+    // console.log('profle :', profile);
+    // console.log('New Password : ', password);
 
     if (password.length > 0) {
       if (password.length < 6) {
-        showMessage({
-          message: ' password urang dai 6 karakter',
-          type: 'default',
-          backgroundColor: colors.warning,
-          color: colors.White,
-        });
+        showError('Password kurang dari 6 karakter');
       } else {
         // update password
         updatePassword();
         updateProfileData();
+        navigation.replace('MainApp');
       }
     } else {
       updateProfileData();
+      navigation.replace('MainApp');
     }
   };
 
@@ -55,16 +51,11 @@ export default function UpdateProfile({ navigation }) {
       if (user) {
         user
           .updatePassword(password)
-          .then((success) => {
-            console.log('success update password: ', success);
-          })
+          // .then((success) => {
+          //   console.log('success update password: ', success);
+          // })
           .catch((error) => {
-            showMessage({
-              message: error.message,
-              type: 'default',
-              backgroundColor: colors.warning,
-              color: colors.White,
-            });
+            showError(error.message);
           });
       }
     });
@@ -78,16 +69,11 @@ export default function UpdateProfile({ navigation }) {
       .ref(`users/${profile.uid}/`)
       .update(data)
       .then(() => {
-        console.log('success : ', data);
+        // console.log('success : ', data);
         storeData('user', data);
       })
       .catch((err) => {
-        showMessage({
-          message: err.message,
-          type: 'default',
-          backgroundColor: colors.warning,
-          color: colors.White,
-        });
+        showError(err.message);
       });
   };
 
@@ -104,17 +90,12 @@ export default function UpdateProfile({ navigation }) {
       (response) => {
         console.log('response : ', response);
         if (response.didCancel || response.error) {
-          showMessage({
-            message: 'oops, sepertinya anda tidak memilih fotonya?',
-            type: 'default',
-            backgroundColor: colors.warning,
-            color: colors.White,
-          });
+          showError('Sepertinya anda tidak memilih fotonya');
         } else {
           const source = response?.assets[0];
-          console.log('response GetImage : ', source);
-          setPhotoForDB(`data:${source.type};base64, ${source.base64}`);
+          // console.log('response GetImage : ', source);
           const Uri = { uri: source.uri };
+          setPhotoForDB(`data:${source.type};base64, ${source.base64}`);
           setPhoto(Uri);
         }
       }
@@ -136,12 +117,16 @@ export default function UpdateProfile({ navigation }) {
           label={'Pekerjaan'}
           value={profile.profession}
           onChangeText={(value) => onChangeText('profession', value)}
-          secureTextEntry
         />
         <Gap height={24} />
         <Input label={'Email Addres'} value={profile.email} disable />
         <Gap height={24} />
-        <Input label={'Password'} value={password} onChangeText={(value) => setPassword(value)} />
+        <Input
+          label={'Password'}
+          value={password}
+          secureTextEntry
+          onChangeText={(value) => setPassword(value)}
+        />
         <Gap height={40} />
         <Button title={'Save Profile'} onPress={update} />
       </View>

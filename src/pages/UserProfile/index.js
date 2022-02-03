@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
 import { ILNullPhoto } from '../../assets';
 import { Gap, Header, List, Profile } from '../../components';
-import { colors, getData } from '../../utils';
+import { Fire } from '../../config';
+import { colors, getData, showError } from '../../utils';
 
 export default function UserProfile({ navigation }) {
   const [profile, setProfile] = useState({
@@ -17,6 +19,18 @@ export default function UserProfile({ navigation }) {
       setProfile(data);
     });
   }, []);
+
+  const signOut = () => {
+    Fire.auth()
+      .signOut()
+      .then(() => {
+        console.log('success sign out');
+        navigation.replace('GetStarted');
+      })
+      .catch((err) => {
+        showError(err.message);
+      });
+  };
 
   return (
     <View style={styles.page}>
@@ -35,7 +49,13 @@ export default function UserProfile({ navigation }) {
       />
       <List name={'Language'} chat={'Avaible in 12 Languages'} type={'next'} icon={'Language'} />
       <List name={'Give Us Rate'} chat={'On Google Play Store'} type={'next'} icon={'rate'} />
-      <List name={'Help Center'} chat={'Read Our Guidelines'} type={'next'} icon={'help'} />
+      <List
+        name={'Sign Out'}
+        chat={'Last Update Yesterday'}
+        type={'next'}
+        icon={'help'}
+        onPress={signOut}
+      />
     </View>
   );
 }

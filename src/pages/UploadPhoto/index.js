@@ -5,7 +5,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { IconAddPhoto, IconRemovePhoto, ILNullPhoto } from '../../assets';
 import { Button, Gap, Header, Link } from '../../components';
 import { Fire } from '../../config';
-import { colors, fonts, storeData } from '../../utils';
+import { colors, fonts, showError, storeData } from '../../utils';
 
 export default function UploadPhoto({ navigation, route }) {
   const { fullName, profession, uid } = route.params;
@@ -19,15 +19,10 @@ export default function UploadPhoto({ navigation, route }) {
       (response) => {
         console.log('response : ', response);
         if (response.didCancel || response.error) {
-          showMessage({
-            message: 'oops, sepertinya anda tidak memilih fotonya?',
-            type: 'default',
-            backgroundColor: colors.warning,
-            color: colors.White,
-          });
+          showError('Sepertinya anda tidak memilih fotonya');
         } else {
           const source = response?.assets[0];
-          console.log('response GetImage : ', source);
+          // console.log('response GetImage : ', source);
           setPhotoForDB(`data:${source.type};base64, ${source.base64}`);
           const Uri = { uri: source.uri };
           setPhoto(Uri);
