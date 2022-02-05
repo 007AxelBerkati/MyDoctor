@@ -3,16 +3,24 @@ import React from 'react';
 import { Button, Gap, Header, Profile, ProfileItem } from '../../components';
 import { colors } from '../../utils';
 
-export default function DoctorProfile({ navigation }) {
+export default function DoctorProfile({ navigation, route }) {
+  const dataDoctor = route.params;
   return (
     <View style={styles.page}>
       <Header title={'Doctor Profile'} onPress={() => navigation.goBack()} />
-      <Profile name={'Nairobi Putri'} desc={'Dokter Anak'} />
-      <ProfileItem label={'Alumnus'} value={'Universitas Indonesia, 2020'} />
-      <ProfileItem label={'Tempat Praktik'} value={'Rumah Sakit Umum, Bandung'} />
-      <ProfileItem label={'No. Str'} value={'0000134323'} />
+      <Profile
+        name={dataDoctor.data.fullName}
+        desc={dataDoctor.data.profession}
+        photo={{ uri: dataDoctor.data.photo }}
+      />
+      <ProfileItem label={'Alumnus'} value={dataDoctor.data.university} />
+      <ProfileItem label={'Tempat Praktik'} value={dataDoctor.data.hospital_address} />
+      <ProfileItem label={'No. Str'} value={dataDoctor.data.str_number} />
       <View style={styles.action}>
-        <Button title={'Start Consultation'} onPress={() => navigation.navigate('Chatting')} />
+        <Button
+          title={'Start Consultation'}
+          onPress={() => navigation.navigate('Chatting', dataDoctor)}
+        />
       </View>
     </View>
   );
@@ -21,6 +29,7 @@ export default function DoctorProfile({ navigation }) {
 const styles = StyleSheet.create({
   page: {
     backgroundColor: colors.White,
+    flex: 1,
   },
   action: {
     paddingHorizontal: 40,

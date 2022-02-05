@@ -22,7 +22,10 @@ export default function Doctor({ navigation }) {
       .then((res) => {
         // console.log('data : ', res.val());
         if (res.val()) {
-          setNews(res.val());
+          const data = res.val();
+          const filterData = data.filter((el) => el !== null);
+          // console.log('hasil filter getNews : ', filterData);
+          setNews(filterData);
         }
       })
       .catch((err) => {
@@ -35,9 +38,11 @@ export default function Doctor({ navigation }) {
       .ref('category_doctor/')
       .once('value')
       .then((res) => {
-        console.log('categoryDoctor : ', res.val());
+        // console.log('categoryDoctor : ', res.val());
         if (res.val()) {
-          setCategoryDoctor(res.val());
+          const data = res.val();
+          const filterData = data.filter((el) => el !== null);
+          setCategoryDoctor(filterData);
         }
       })
       .catch((err) => {
@@ -62,7 +67,7 @@ export default function Doctor({ navigation }) {
               data: oldData[key],
             });
           });
-          console.log('Data hasil parsing array : ', data);
+          // console.log('Data hasil parsing array : ', data);
           setDoctors(data);
         }
       })
@@ -88,7 +93,7 @@ export default function Doctor({ navigation }) {
                     <DoctorCategory
                       category={item.category}
                       key={item.id}
-                      onPress={() => navigation.navigate('ChooseDoctor')}
+                      onPress={() => navigation.navigate('ChooseDoctor', item)}
                     />
                   );
                 })}
@@ -115,7 +120,7 @@ export default function Doctor({ navigation }) {
                   name={doctor.data.fullName}
                   desc={doctor.data.category}
                   avatar={{ uri: doctor.data.photo }}
-                  onPress={() => navigation.navigate('DoctorProfile')}
+                  onPress={() => navigation.navigate('DoctorProfile', doctor)}
                 />
               );
             })}

@@ -69,5 +69,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: fonts.primary[400],
     color: colors.text.secondary,
+    textTransform: 'capitalize',
   },
 });

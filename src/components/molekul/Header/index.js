@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     color: type === 'dark' ? colors.White : colors.text.primary,
     textAlign: 'center',
     flex: 1,
+    textTransform: 'capitalize',
   }),
 
   container: (type) => ({
