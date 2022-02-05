@@ -17,7 +17,7 @@ export default function UploadPhoto({ navigation, route }) {
     launchImageLibrary(
       { quality: 0.5, maxWidth: 200, maxHeight: 200, includeBase64: true },
       (response) => {
-        console.log('response : ', response);
+        // console.log('response : ', response);
         if (response.didCancel || response.error) {
           showError('Sepertinya anda tidak memilih fotonya');
         } else {

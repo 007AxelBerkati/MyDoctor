@@ -12,17 +12,18 @@ export default function UpdateProfile({ navigation }) {
     fullName: '',
     profession: '',
     email: '',
-    password: '',
+    photoForDB: '',
   });
 
   const [password, setPassword] = useState('');
   const [photo, setPhoto] = useState(ILNullPhoto);
-  const [photoForDB, setPhotoForDB] = useState('');
 
   useEffect(() => {
     getData('user').then((res) => {
       const data = res;
-      setPhoto({ uri: res.photo });
+      data.photoForDB = res?.photo?.length > 1 ? res.photo : ILNullPhoto;
+      const tempPhoto = res?.photo?.length > 1 ? { uri: res.photo } : ILNullPhoto;
+      setPhoto(tempPhoto);
       setProfile(data);
     });
   }, []);
@@ -38,11 +39,9 @@ export default function UpdateProfile({ navigation }) {
         // update password
         updatePassword();
         updateProfileData();
-        navigation.replace('MainApp');
       }
     } else {
       updateProfileData();
-      navigation.replace('MainApp');
     }
   };
 
@@ -63,14 +62,16 @@ export default function UpdateProfile({ navigation }) {
 
   const updateProfileData = () => {
     const data = profile;
-    data.photo = photoForDB;
-
+    data.photo = profile.photoForDB;
+    delete data.photoForDB;
     Fire.database()
       .ref(`users/${profile.uid}/`)
       .update(data)
       .then(() => {
         // console.log('success : ', data);
-        storeData('user', data);
+        storeData('user', data).then(() => {
+          navigation.replace('MainApp');
+        });
       })
       .catch((err) => {
         showError(err.message);
@@ -88,14 +89,17 @@ export default function UpdateProfile({ navigation }) {
     launchImageLibrary(
       { quality: 0.5, maxWidth: 200, maxHeight: 200, includeBase64: true },
       (response) => {
-        console.log('response : ', response);
+        // console.log('response : ', response);
         if (response.didCancel || response.error) {
           showError('Sepertinya anda tidak memilih fotonya');
         } else {
           const source = response?.assets[0];
           // console.log('response GetImage : ', source);
           const Uri = { uri: source.uri };
-          setPhotoForDB(`data:${source.type};base64, ${source.base64}`);
+          setProfile({
+            ...profile,
+            photoForDB: `data:${source.type};base64, ${source.base64}`,
+          });
           setPhoto(Uri);
         }
       }
