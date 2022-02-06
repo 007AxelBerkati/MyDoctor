@@ -38,11 +38,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: fonts.primary[600],
     color: colors.text.primary,
+    textTransform: 'capitalize',
   },
   job: {
     fontSize: 12,
     fontFamily: fonts.primary[400],
     color: colors.text.secondary,
+    textTransform: 'capitalize',
   },
   starsStyle: {
     flexDirection: 'row',

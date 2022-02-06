@@ -55,12 +55,14 @@ const styles = StyleSheet.create({
     fontFamily: fonts.primary[600],
     fontSize: 20,
     color: colors.text.primary,
+    textTransform: 'capitalize',
   },
   job: {
     fontFamily: fonts.primary[400],
     fontSize: 16,
     color: colors.text.secondary,
     marginTop: 2,
+    textTransform: 'capitalize',
   },
   removePhoto: {
     position: 'absolute',

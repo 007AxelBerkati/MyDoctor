@@ -57,7 +57,7 @@ export default function Doctor({ navigation }) {
       .limitToLast(3)
       .once('value')
       .then((res) => {
-        console.log('Top Rated Doctor : ', res.val());
+        // console.log('Top Rated Doctor : ', res.val());
         if (res.val()) {
           const oldData = res.val();
           const data = [];

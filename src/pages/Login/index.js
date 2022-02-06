@@ -81,13 +81,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.White,
     flex: 1,
   },
-  title: {
-    fontFamily: fonts.primary[600],
-    fontSize: 20,
-    color: colors.text.primary,
-    backgroundColor: 'white',
-    flex: 1,
-  },
+
   title: {
     fontFamily: 'Nunito-SemiBold',
     fontSize: 20,

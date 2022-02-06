@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { DummyDoctor1 } from '../../assets';
 import { Header, List } from '../../components';
 import { Fire } from '../../config';
 import { colors } from '../../utils';
@@ -33,7 +32,7 @@ export default function ChooseDoctor({ navigation, route }) {
               data: oldData[key],
             });
           });
-          console.log('data category doctor pharsing : ', data);
+          // console.log('data category doctor pharsing : ', data);
           setListDoctor(data);
         }
       });
@@ -48,6 +47,7 @@ export default function ChooseDoctor({ navigation, route }) {
       {listDoctor.map((doctor) => {
         return (
           <List
+            key={doctor.id}
             type={'next'}
             profile={{ uri: doctor.data.photo }}
             name={doctor.data.fullName}

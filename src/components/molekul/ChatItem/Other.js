@@ -3,15 +3,15 @@ import React from 'react';
 import { colors, fonts } from '../../../utils';
 import { DummyDoctor11 } from '../../../assets';
 
-export default function Other() {
+export default function Other({ text, date, photo }) {
   return (
     <View style={styles.container}>
-      <Image source={DummyDoctor11} style={styles.avatar} />
+      <Image source={photo} style={styles.avatar} />
       <View>
         <View style={styles.chatContent}>
-          <Text style={styles.text}>Halo IIbu asdfsadfsadfsda</Text>
+          <Text style={styles.text}>{text}</Text>
         </View>
-        <Text style={styles.date}>4.20 AM</Text>
+        <Text style={styles.date}>{date}</Text>
       </View>
     </View>
   );
