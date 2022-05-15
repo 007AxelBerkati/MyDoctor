@@ -6,25 +6,13 @@ import { Gap, Header, List, Profile } from '../../components';
 import { Fire } from '../../config';
 import { colors, getData, showError } from '../../utils';
 
-export default function UserProfile({ navigation }) {
-  const [profile, setProfile] = useState({
-    fullName: '',
-    profession: '',
-    photo: ILNullPhoto,
-  });
-  useEffect(() => {
-    getData('user').then((res) => {
-      const data = res;
-      data.photo = { uri: res.photo };
-      setProfile(data);
-    });
-  }, []);
+export default function UserProfile({ navigation, route }) {
+  const profile = route.params;
 
   const signOut = () => {
     Fire.auth()
       .signOut()
       .then(() => {
-        console.log('success sign out');
         navigation.replace('GetStarted');
       })
       .catch((err) => {

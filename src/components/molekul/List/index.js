@@ -10,7 +10,7 @@ import {
 } from '../../../assets';
 import { colors, fonts } from '../../../utils';
 
-export default function List({ profile, name, chat, type, onPress, icon }) {
+export default function List({ profile, name, chat, type, onPress, icon, desc }) {
   const Icon = () => {
     if (icon === 'edit-profile') {
       return <IconEditProfile />;
@@ -32,6 +32,7 @@ export default function List({ profile, name, chat, type, onPress, icon }) {
       <View style={styles.titleWrapper}>
         <Text style={styles.names}>{name}</Text>
         <Text style={styles.chat}>{chat}</Text>
+        <Text style={styles.chat}>{desc}</Text>
       </View>
       {type === 'next' && <IconNext />}
     </TouchableOpacity>

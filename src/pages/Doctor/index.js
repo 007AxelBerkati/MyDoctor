@@ -1,31 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { DummyDoctor1, DummyDoctor2, DummyDoctor3 } from '../../assets';
+import { ILNullPhoto } from '../../assets';
 import { DoctorCategory, Gap, HomeProfile, NewsItem, RatedDoctor } from '../../components';
 import { Fire } from '../../config';
 import { colors, fonts, showError } from '../../utils';
+import { getData } from '../../utils';
 
 export default function Doctor({ navigation }) {
   const [news, setNews] = useState([]);
   const [categoryDoctor, setCategoryDoctor] = useState([]);
   const [doctors, setDoctors] = useState([]);
+  const [profile, setProfile] = useState({
+    photo: ILNullPhoto,
+    fullName: '',
+    profession: '',
+  });
   useEffect(() => {
     getCategoryDoctor();
     getTopRatedDoctor();
     getNews();
+    navigation.addListener('focus', () => {
+      getUserData();
+    });
   }, []);
 
-  const getNews = () => {
+  const getTopRatedDoctor = () => {
     Fire.database()
-      .ref('news/')
+      .ref('doctors/')
+      .orderByChild('rate')
+      .limitToLast(3)
       .once('value')
       .then((res) => {
-        // console.log('data : ', res.val());
         if (res.val()) {
-          const data = res.val();
-          const filterData = data.filter((el) => el !== null);
-          // console.log('hasil filter getNews : ', filterData);
-          setNews(filterData);
+          const oldData = res.val();
+          const data = [];
+          Object.keys(oldData).map((key) => {
+            data.push({
+              id: key,
+              data: oldData[key],
+            });
+          });
+          // console.log('Data hasil parsing array : ', data);
+          setDoctors(data);
         }
       })
       .catch((err) => {
@@ -50,38 +66,40 @@ export default function Doctor({ navigation }) {
       });
   };
 
-  const getTopRatedDoctor = () => {
+  const getNews = () => {
     Fire.database()
-      .ref('doctors/')
-      .orderByChild('rate')
-      .limitToLast(3)
+      .ref('news/')
       .once('value')
       .then((res) => {
-        // console.log('Top Rated Doctor : ', res.val());
         if (res.val()) {
-          const oldData = res.val();
-          const data = [];
-          Object.keys(oldData).map((key) => {
-            data.push({
-              id: key,
-              data: oldData[key],
-            });
-          });
-          // console.log('Data hasil parsing array : ', data);
-          setDoctors(data);
+          const data = res.val();
+          const filterData = data.filter((el) => el !== null);
+          setNews(filterData);
         }
       })
       .catch((err) => {
         showError(err.message);
       });
   };
+
+  const getUserData = () => {
+    getData('user').then((res) => {
+      const data = res;
+      data.photo = res?.photo?.length > 1 ? { uri: res.photo } : ILNullPhoto;
+      setProfile(res);
+    });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.content}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.wrapperSection}>
             <Gap height={30} />
-            <HomeProfile onPress={() => navigation.navigate('UserProfile')} />
+            <HomeProfile
+              profile={profile}
+              onPress={() => navigation.navigate('UserProfile', profile)}
+            />
             <Text style={styles.welcome}>Mau Konsultasi Dengan Siapa Hari Ini</Text>
           </View>
           <View style={styles.wrapperScroll}>
@@ -92,21 +110,12 @@ export default function Doctor({ navigation }) {
                   return (
                     <DoctorCategory
                       category={item.category}
-                      key={item.id}
+                      key={`category-${item.id}`}
                       onPress={() => navigation.navigate('ChooseDoctor', item)}
                     />
                   );
                 })}
 
-                {/* {JSONCategoryDoctor.data.map((item) => {
-                  return (
-                    <DoctorCategory
-                      category={item.category}
-                      key={item.id}
-                      onPress={() => navigation.navigate('ChooseDoctor')}
-                    />
-                  );
-                })} */}
                 <Gap width={22} />
               </View>
             </ScrollView>
@@ -129,7 +138,12 @@ export default function Doctor({ navigation }) {
             <Text style={styles.sectionLabel}>Good News</Text>
             {news.map((item) => {
               return (
-                <NewsItem key={item.id} title={item.title} date={item.date} image={item.image} />
+                <NewsItem
+                  key={`news-${item.id}`}
+                  title={item.title}
+                  date={item.date}
+                  image={item.image}
+                />
               );
             })}
           </View>

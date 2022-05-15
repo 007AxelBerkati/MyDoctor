@@ -12,7 +12,6 @@ export default function Chatting({ navigation, route }) {
 
   useEffect(() => {
     getDataUserFromLocal();
-
     const chatId = `${user.uid}_${dataDoctor.data.uid}`;
     const urlFirebase = `chatting/${chatId}/allChat/`;
     Fire.database()
@@ -22,7 +21,6 @@ export default function Chatting({ navigation, route }) {
         if (snapshot.val()) {
           const dataSnapshot = snapshot.val();
           const allDataChat = [];
-
           // mengubah object tanggal menjadi sebuah array
           Object.keys(dataSnapshot).map((key) => {
             const dataChat = dataSnapshot[key];
@@ -35,27 +33,23 @@ export default function Chatting({ navigation, route }) {
                 data: dataChat[itemChat],
               });
             });
-            // console.log('data chat parse : ', newDataChat);
             allDataChat.push({
               id: key,
               data: newDataChat,
             });
           });
-          console.log('all data chat : ', allDataChat);
           setChatData(allDataChat);
         }
       });
-  }, []);
+  }, [dataDoctor.data.uid, user.uid]);
 
   const getDataUserFromLocal = () => {
     getData('user').then((res) => {
-      // console.log('user Login ', res);
       setUser(res);
     });
   };
 
   const chatSend = () => {
-    // console.log('user : ', user);
     const today = new Date();
 
     const data = {
@@ -68,20 +62,31 @@ export default function Chatting({ navigation, route }) {
     const chatId = `${user.uid}_${dataDoctor.data.uid}`;
 
     const urlFirebase = `chatting/${chatId}/allChat/${setDateChat(today)}`;
-    // console.log('data untuk dikirim : ', data);
+    const urlMessageUser = `messages/${user.uid}/${chatId}`;
+    const urlMessageDoctor = `messages/${dataDoctor.data.uid}/${chatId}`;
+    const dataHistoryChatForUser = {
+      lastContentChat: chatContent,
+      lastChatDate: today.getTime(),
+      uidPartner: dataDoctor.data.uid,
+    };
+    const dataHistoryChatForDoctor = {
+      lastContentChat: chatContent,
+      lastChatDate: today.getTime(),
+      uidPartner: user.uid,
+    };
 
-    // console.log(
-    //   'url firebase : ',
-    //   `chatting/${user.uid}_${dataDoctor.data.uid}/allChat/${year}-${month}-${date}`
-    // );
-    setChatContent('');
     // kirim ke firebase
 
     Fire.database()
       .ref(urlFirebase)
       .push(data)
-      .then((res) => {
+      .then(() => {
         setChatContent('');
+        // set history for user
+        Fire.database().ref(urlMessageUser).set(dataHistoryChatForUser);
+
+        // set history for dataDoctor
+        Fire.database().ref(urlMessageDoctor).set(dataHistoryChatForDoctor);
       })
       .catch((err) => {
         showError(err.message);
@@ -97,7 +102,7 @@ export default function Chatting({ navigation, route }) {
         onPress={() => navigation.goBack()}
       />
       <View style={styles.content}>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           {chatData.map((chat) => {
             return (
               <View key={chat.id}>
@@ -123,6 +128,7 @@ export default function Chatting({ navigation, route }) {
         value={chatContent}
         onChangeText={(value) => setChatContent(value)}
         onButtonPress={chatSend}
+        targetChat={dataDoctor}
       />
     </View>
   );

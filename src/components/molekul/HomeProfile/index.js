@@ -3,22 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { DummyUser, ILNullPhoto } from '../../../assets';
 import { colors, fonts, getData } from '../../../utils';
 
-export default function HomeProfile({ onPress }) {
-  const [profile, setProfile] = useState({
-    photo: ILNullPhoto,
-    fullName: '',
-    profession: '',
-  });
-
-  useEffect(() => {
-    getData('user').then((res) => {
-      // console.log('dataUser', res);
-      const data = res;
-      data.photo = { uri: res.photo };
-      // console.log('New Profile :', data);
-      setProfile(res);
-    });
-  }, []);
+export default function HomeProfile({ onPress, profile }) {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <Image source={profile.photo} style={styles.imageStyle} />

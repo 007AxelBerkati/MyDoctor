@@ -1,11 +1,10 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Button, Gap, Header, Input, Profile } from '../../components';
-import { colors, getData, showError, storeData } from '../../utils';
-import { Fire } from '../../config';
-import { showMessage } from 'react-native-flash-message';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { ILNullPhoto } from '../../assets';
+import { Button, Gap, Header, Input, Profile } from '../../components';
+import { Fire } from '../../config';
+import { colors, getData, showError, storeData } from '../../utils';
 
 export default function UpdateProfile({ navigation }) {
   const [profile, setProfile] = useState({
